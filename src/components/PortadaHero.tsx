@@ -14,15 +14,22 @@ import portadaImg from '../assets/images/portada_archivo_gestion_1791302482389.j
 
 interface PortadaHeroProps {
   onStartOrContinue: () => void;
+  onSelectStage: (stageId: number) => void;
   currentStage: number;
 }
 
 export const PortadaHero: React.FC<PortadaHeroProps> = ({
   onStartOrContinue,
+  onSelectStage,
   currentStage,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const [isImageZoomed, setIsImageZoomed] = useState<boolean>(false);
+
+  // Phase matching
+  const isPhase1Active = currentStage === 1 || currentStage === 2;
+  const isPhase2Active = currentStage === 3;
+  const isPhase3Active = currentStage >= 4;
 
   return (
     <div className="w-full bg-gradient-to-b from-white to-slate-50 border-b border-slate-200 shadow-2xs no-print">
@@ -71,71 +78,204 @@ export const PortadaHero: React.FC<PortadaHeroProps> = ({
                 </p>
               </div>
 
-              {/* 3 Key Pillar Highlights - All boxes feature the archival image */}
+              {/* 3 Key Pillar Highlights - Fully Active Buttons for each Phase and Stage */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                {/* Box 1 */}
-                <div className="relative group overflow-hidden rounded-xl border border-emerald-600/30 p-3 shadow-xs bg-slate-900 text-white min-h-[95px] flex flex-col justify-end">
+                {/* Botón Fase 1 */}
+                <div
+                  className={`relative group overflow-hidden rounded-xl border p-3 shadow-xs bg-slate-900 text-white min-h-[120px] flex flex-col justify-between transition-all cursor-pointer ${
+                    isPhase1Active
+                      ? 'border-emerald-400 ring-2 ring-emerald-500/40 shadow-emerald-900/20'
+                      : 'border-emerald-600/30 hover:border-emerald-400'
+                  }`}
+                  onClick={() => onSelectStage(1)}
+                  title="Activar Fase 1: Desmetalizado y Clasificación TRD"
+                >
                   <img
                     src={portadaImg}
                     alt="Fase 1"
-                    className="absolute inset-0 w-full h-full object-cover object-left opacity-35 group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full object-cover object-left opacity-30 group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/60 to-transparent pointer-events-none" />
-                  <div className="relative z-10">
-                    <span className="text-[10px] uppercase font-bold text-emerald-300 block">
-                      Fase 1 · Depósito
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-transparent pointer-events-none" />
+                  
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold text-emerald-300">
+                      Fase 1 · Diagnóstico
                     </span>
-                    <span className="text-xs font-bold text-white block truncate">
-                      1. Desmetalizado
+                    {isPhase1Active && (
+                      <span className="text-[9px] font-bold bg-emerald-500 text-slate-950 px-1.5 py-0.2 rounded-full">
+                        Activa
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative z-10 my-1">
+                    <span className="text-xs font-bold text-white block truncate leading-tight">
+                      Limpieza & Clasificación
                     </span>
-                    <span className="text-[11px] text-slate-300 block truncate">
-                      Limpieza mecánica & TRD
+                    <span className="text-[10px] text-slate-300 block truncate">
+                      Desmetalizado y TRD
                     </span>
+                  </div>
+
+                  {/* Botones de acción directa de Etapa */}
+                  <div className="relative z-10 flex items-center gap-1.5 pt-1 border-t border-white/10" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => onSelectStage(1)}
+                      className={`px-2 py-0.5 text-[10px] font-semibold rounded transition-colors cursor-pointer ${
+                        currentStage === 1
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      Etapa 1
+                    </button>
+                    <button
+                      onClick={() => onSelectStage(2)}
+                      className={`px-2 py-0.5 text-[10px] font-semibold rounded transition-colors cursor-pointer ${
+                        currentStage === 2
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      Etapa 2
+                    </button>
                   </div>
                 </div>
 
-                {/* Box 2 */}
-                <div className="relative group overflow-hidden rounded-xl border border-emerald-600/30 p-3 shadow-xs bg-slate-900 text-white min-h-[95px] flex flex-col justify-end">
+                {/* Botón Fase 2 */}
+                <div
+                  className={`relative group overflow-hidden rounded-xl border p-3 shadow-xs bg-slate-900 text-white min-h-[120px] flex flex-col justify-between transition-all cursor-pointer ${
+                    isPhase2Active
+                      ? 'border-emerald-400 ring-2 ring-emerald-500/40 shadow-emerald-900/20'
+                      : 'border-emerald-600/30 hover:border-emerald-400'
+                  }`}
+                  onClick={() => onSelectStage(3)}
+                  title="Activar Fase 2: Ordenación y Principio de Orden Original"
+                >
                   <img
                     src={portadaImg}
                     alt="Fase 2"
-                    className="absolute inset-0 w-full h-full object-cover object-center opacity-35 group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full object-cover object-center opacity-30 group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/60 to-transparent pointer-events-none" />
-                  <div className="relative z-10">
-                    <span className="text-[10px] uppercase font-bold text-emerald-300 block">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-transparent pointer-events-none" />
+                  
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold text-emerald-300">
                       Fase 2 · Procedencia
                     </span>
-                    <span className="text-xs font-bold text-white block truncate">
-                      2. Orden Original
+                    {isPhase2Active && (
+                      <span className="text-[9px] font-bold bg-emerald-500 text-slate-950 px-1.5 py-0.2 rounded-full">
+                        Activa
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative z-10 my-1">
+                    <span className="text-xs font-bold text-white block truncate leading-tight">
+                      Ordenación Original
                     </span>
-                    <span className="text-[11px] text-slate-300 block truncate">
+                    <span className="text-[10px] text-slate-300 block truncate">
                       Secuencia procedimental
                     </span>
                   </div>
+
+                  {/* Botón de acción directa de Etapa */}
+                  <div className="relative z-10 flex items-center gap-1.5 pt-1 border-t border-white/10" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => onSelectStage(3)}
+                      className={`w-full px-2 py-0.5 text-[10px] font-semibold rounded transition-colors text-center cursor-pointer ${
+                        currentStage === 3
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      Etapa 3: Ordenar
+                    </button>
+                  </div>
                 </div>
 
-                {/* Box 3 */}
-                <div className="relative group overflow-hidden rounded-xl border border-emerald-600/30 p-3 shadow-xs bg-slate-900 text-white min-h-[95px] flex flex-col justify-end">
+                {/* Botón Fase 3 */}
+                <div
+                  className={`relative group overflow-hidden rounded-xl border p-3 shadow-xs bg-slate-900 text-white min-h-[120px] flex flex-col justify-between transition-all cursor-pointer ${
+                    isPhase3Active
+                      ? 'border-emerald-400 ring-2 ring-emerald-500/40 shadow-emerald-900/20'
+                      : 'border-emerald-600/30 hover:border-emerald-400'
+                  }`}
+                  onClick={() => onSelectStage(4)}
+                  title="Activar Fase 3: Foliación, Carpeta de 4 Aletas, FUID y Evaluación"
+                >
                   <img
                     src={portadaImg}
                     alt="Fase 3"
-                    className="absolute inset-0 w-full h-full object-cover object-right opacity-35 group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full object-cover object-right opacity-30 group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/60 to-transparent pointer-events-none" />
-                  <div className="relative z-10">
-                    <span className="text-[10px] uppercase font-bold text-emerald-300 block">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/70 to-transparent pointer-events-none" />
+                  
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold text-emerald-300">
                       Fase 3 · Custodia
                     </span>
-                    <span className="text-xs font-bold text-white block truncate">
-                      3. Foliación & FUID
+                    {isPhase3Active && (
+                      <span className="text-[9px] font-bold bg-emerald-500 text-slate-950 px-1.5 py-0.2 rounded-full">
+                        Activa
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative z-10 my-1">
+                    <span className="text-xs font-bold text-white block truncate leading-tight">
+                      Foliación & FUID
                     </span>
-                    <span className="text-[11px] text-slate-300 block truncate">
-                      Carpeta 4 aletas & AGN
+                    <span className="text-[10px] text-slate-300 block truncate">
+                      Carpeta 4 aletas & Evaluación
                     </span>
+                  </div>
+
+                  {/* Botones de acción directa de Etapa */}
+                  <div className="relative z-10 flex items-center gap-1 pt-1 border-t border-white/10 flex-wrap" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => onSelectStage(4)}
+                      className={`px-1.5 py-0.5 text-[9px] font-semibold rounded transition-colors cursor-pointer ${
+                        currentStage === 4
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      E4: Foliar
+                    </button>
+                    <button
+                      onClick={() => onSelectStage(5)}
+                      className={`px-1.5 py-0.5 text-[9px] font-semibold rounded transition-colors cursor-pointer ${
+                        currentStage === 5
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      E5: Rótulo
+                    </button>
+                    <button
+                      onClick={() => onSelectStage(6)}
+                      className={`px-1.5 py-0.5 text-[9px] font-semibold rounded transition-colors cursor-pointer ${
+                        currentStage === 6
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      E6: FUID
+                    </button>
+                    <button
+                      onClick={() => onSelectStage(7)}
+                      className={`px-1.5 py-0.5 text-[9px] font-semibold rounded transition-colors cursor-pointer ${
+                        currentStage === 7
+                          ? 'bg-emerald-500 text-slate-950 font-bold'
+                          : 'bg-white/15 hover:bg-white/25 text-white'
+                      }`}
+                    >
+                      E7: Nota
+                    </button>
                   </div>
                 </div>
               </div>

@@ -647,6 +647,7 @@ export default function App() {
       {/* Institutional Portada / Hero with Workshop Photo and Title */}
       <PortadaHero
         onStartOrContinue={() => setCurrentStage(1)}
+        onSelectStage={(stageId) => setCurrentStage(stageId)}
         currentStage={currentStage}
       />
 
